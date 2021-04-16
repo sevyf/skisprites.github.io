@@ -26,7 +26,7 @@
 //  var ss = SpreadsheetApp.getActiveSpreadsheet();
 //  var respSheet = ss.getSheets()[0];  // Forms typically go into sheet 0.
 //  var respRow = respSheet.getLastRow();
-//  
+//
 //  // Double check a couple items against fields that were submitted
 //  var headers = respSheet.getRange(1,1,1,respSheet.getLastColumn()).getValues()[0];
 //  var allValues = respSheet.getRange(respRow,1,1,respSheet.getLastColumn()).getValues()[0];
@@ -34,14 +34,14 @@
 //      (allValues[headers.indexOf("Email Address")] != e.namedValues["Email Address"].toString())) {
 //    throw "Input data does not match final row. Need to send signature sheets manually.";
 //  }
-//  
+//
 //  var index = respRow;
 //  // If family, find row of primary member
 //  if (type.indexOf("Individual") < 0) {
-//  
+//
 //
 //  emailSignatureSheetsForIndex(respRow);
-//  // Release lock so if multiple people submitted form at same time, the next person can 
+//  // Release lock so if multiple people submitted form at same time, the next person can
 //  //  run this function now.
 //  lock.releaseLock();
 //}
@@ -80,7 +80,7 @@
 //      // WORKING HERE
 //    }
 //  }
-//  
+//
 //  // Create document from template
 //  var nameNoSpace = names.replace(/\s+/g, '');
 //  var overwrite = 1; // set to 0 if want new file every time
@@ -136,7 +136,7 @@
 //  }
 //  // Doc is done
 //  docCopy.saveAndClose();
-//  // Release lock so if multiple people submitted form at same time, the next person can 
+//  // Release lock so if multiple people submitted form at same time, the next person can
 //  //  run this function now.
 //  lock.releaseLock();
 //  return newLetterId;
@@ -162,7 +162,7 @@ function emailSignatureSheets(index,newLetterId) {
   var allValues = respSheet.getRange(index,1,1,respSheet.getLastColumn()).getValues()[0];
   var emailAddress = allValues[headers.indexOf("Email Address")];
   if (emailAddress) {
-    Logger.log('Sending email to <' + emailAddress + '>');  
+    Logger.log('Sending email to <' + emailAddress + '>');
     var pdf = DriveApp.getFileById(newLetterId).getAs("application/pdf");
     var subject = "Ski Sprites Signature Pages";
     var body = "Welcome to the Ski Sprites WaterSki Team!\n";
@@ -183,10 +183,10 @@ function emailSignatureSheets(index,newLetterId) {
     //MailApp.sendEmail(emailAddress, subject, body, {attachments: [pdf, waiver], htmlBody: html});
     MailApp.sendEmail(emailAddress, subject, body, {attachments: pdf});
   } else {
-    Logger.log('Email address <' + emailAddress + '> not found');  
+    Logger.log('Email address <' + emailAddress + '> not found');
   }
 
-  // Release lock so if multiple people submitted form at same time, the next person can 
+  // Release lock so if multiple people submitted form at same time, the next person can
   //  run this function now.
   lock.releaseLock();
   return newLetterId;
@@ -265,9 +265,9 @@ function createSignatureSheets(e) {
   var nameNoSpace = primaryName.replace(/\s+/g, '');
   var overwrite = 0; // set to 0 if want new file every time
   var formattedDate = Utilities.formatDate(new Date(), "CDT", "yyyy-MM-dd");
-  var inputFileName = "SignatureTemplate2020";
+  var inputFileName = "SignatureTemplate2021";
   var outputFileName = nameNoSpace + formattedDate;
-  var outputFolderName = "SpritesSignaturePages2020";
+  var outputFolderName = "SpritesSignaturePages2021";
   var files = DriveApp.getFilesByName(inputFileName);
   if (!files.hasNext()) {
     throw "Error, can't find letter template: " + inputFileName;
@@ -339,7 +339,7 @@ function createSignatureSheets(e) {
       }
       elements.push(element);// store paragraphs in an array
     }
-    for(var el=0;el<elements.length;el++){ 
+    for(var el=0;el<elements.length;el++){
       var paragraph = elements[el].copy();
       docCopy.getBody().appendParagraph(paragraph);
     }
@@ -351,7 +351,7 @@ function createSignatureSheets(e) {
   col = headers.indexOf("Email Address");
   var emailAddress = allValues[primaryIndex][col].toString(); // Primary contact should be first in allValues structure
   if (emailAddress) {
-    Logger.log('Sending email to <' + emailAddress + '>');  
+    Logger.log('Sending email to <' + emailAddress + '>');
     var pdf = DriveApp.getFileById(newLetterId).getAs("application/pdf");
     var subject = "Ski Sprites Medical Information Signature Page";
     var body = "Welcome to the Ski Sprites WaterSki Team!\n";
@@ -370,9 +370,9 @@ function createSignatureSheets(e) {
     body += "\nThanks, and we look forward to seeing you this summer."
     MailApp.sendEmail(emailAddress, subject, body, {attachments: pdf});
   } else {
-    Logger.log('Email address <' + emailAddress + '> not found');  
+    Logger.log('Email address <' + emailAddress + '> not found');
   }
-  // Release lock so if multiple people submitted form at same time, the next person can 
+  // Release lock so if multiple people submitted form at same time, the next person can
   //  run this function now.
   lock.releaseLock();
 }
@@ -482,7 +482,7 @@ function createSignatureSheetsForName(primaryName) {
       }
       elements.push(element);// store paragraphs in an array
     }
-    for(var el=0;el<elements.length;el++){ 
+    for(var el=0;el<elements.length;el++){
       var paragraph = elements[el].copy();
       docCopy.getBody().appendParagraph(paragraph);
     }
@@ -494,7 +494,7 @@ function createSignatureSheetsForName(primaryName) {
 
 // Send a doc as pdf to the given email address
 function sendPDFtoEmail(docID,emailAddress) {
-    Logger.log('Sending email to <' + emailAddress + '>');  
+    Logger.log('Sending email to <' + emailAddress + '>');
     var pdf = DriveApp.getFileById(docId).getAs("application/pdf");
     var subject = "Ski Sprites Medical Information Signature Page";
     var body = "Welcome to the Ski Sprites WaterSki Team!\n";
@@ -512,7 +512,7 @@ function sendPDFtoEmail(docID,emailAddress) {
     body += "   and can be paid by cash, check, or credit card online (https://goo.gl/g0smto)\n";
     body += "\nThanks, and we look forward to seeing you this summer."
     MailApp.sendEmail(emailAddress, subject, body, {attachments: pdf});
-} 
+}
 
 /**
  * Adds a custom menu to the active spreadsheet, containing a single menu item
